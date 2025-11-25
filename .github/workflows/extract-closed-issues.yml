@@ -1,0 +1,79 @@
+name: Extract closed issues
+
+on:
+  workflow_dispatch:          # 手动按钮触发
+  schedule:
+    - cron: '0 7 * * *'       # 每天早上 07:00 UTC (北京时间15:00)
+  issues:
+    types: [closed]           # 当issue被关闭时触发
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: read            # 只需读权限
+      contents: write         # 如果想把结果 push 回仓库
+    steps:
+      - uses: actions/checkout@v4   # 先把仓库代码拉下来，方便写文件
+
+      - name: Install GitHub CLI
+        run: sudo apt update && sudo apt install -y gh
+
+      - name: Fetch and parse closed issues
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 获取已关闭的prompt-extraction issues并解析结构化数据
+          gh api repos/${{ github.repository }}/issues \
+             -X GET -f state=closed -f labels=prompt-extraction -f per_page=100 --paginate \
+             --jq '[ .[] | 
+               {
+                 number,
+                 title,
+                 state,
+                 created_at,
+                 closed_at,
+                 updated_at,
+                 user: {login: .user.login, id: .user.id},
+                 labels: [.labels[] | .name],
+                 assignees: [.assignees[] | .login],
+                 parsed_data: (
+                   # 解析YAML格式的issue body
+                   try (
+                     # 提取各个字段的值
+                     {
+                       prompt_title: (.body | match("### 🎯 Prompt标题\r?\n.*?\r?\n([^\r\n]+)"; "g").captures[0].string // ""),
+                       creator: (.body | match("### 👤 作者\r?\n.*?\r?\n([^\r\n]+)"; "g").captures[0].string // ""),
+                       prompt_content: (.body | match("### 📄 完整Prompt\r?\n.*?\r?\n([^\r\n]+)"; "g").captures[0].string // ""),
+                       model_name: (.body | match("### 🤖 模型名称\r?\n.*?\r?\n([^\r\n]+)"; "g").captures[0].string // ""),
+                       other_parameters: (.body | match("### ⚙️ 其他参数 \(可选\)\r?\n.*?\r?\n([^\r\n]+)"; "g").captures[0].string // ""),
+                       image_url: (
+                         # 提取图片URL，包括GitHub上传的图片
+                         (.body | match("### 🖼️ 效果图URL\r?\n.*?\r?\n([^\r\n]+)"; "g").captures[0].string // "") |
+                         capture("https?://[^\\s\\)]+") |
+                         .string // ""
+                       ),
+                       tags: (.body | match("### 🏷️ 标签\r?\n.*?\r?\n([^\r\n]+)"; "g").captures[0].string // ""),
+                       nsfw_content: (
+                         # 提取NSFW复选框状态
+                         if (.body | test("安全内容 \\(SFW\\)")) then ["安全内容 (SFW)"] else [] end +
+                         if (.body | test("成人内容 \\(NSFW\\)")) then ["成人内容 (NSFW)"] else [] end
+                       )
+                     }
+                   ) catch null
+                 ),
+                 raw_body: .body
+               }
+             ]' \
+             > prompts.json
+
+          echo "提取完成，prompts.json已保存到根目录"
+          ls -la prompts.json
+
+      # 提交结果回仓库
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add prompts.json
+          git diff --cached --quiet || (git commit -m "update prompts data $(date '+%Y-%m-%d %H:%M:%S')" && git push)

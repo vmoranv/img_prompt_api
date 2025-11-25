@@ -1,0 +1,105 @@
+name: 生图Prompt提取
+description: 从issue中提取生图prompt、模型和效果图信息
+title: '[PROMPT] '
+labels: ['prompt-extraction']
+assignees: ''
+body:
+- type: markdown
+  attributes:
+    value: |
+      ## 📝 Prompt信息提取
+      请填写以下核心信息来提交你的prompt。
+
+- type: input
+  id: prompt_title
+  attributes:
+    label: 🎯 Prompt标题
+    description: 为prompt起一个简洁明了的标题
+    placeholder: 例如：赛博朋克风格美女肖像
+  validations:
+    required: true
+
+- type: input
+  id: creator
+  attributes:
+    label: 👤 作者
+    description: prompt的原创作者或发现者
+    placeholder: 例如：AI_Artist
+  validations:
+    required: true
+
+- type: textarea
+  id: prompt_content
+  attributes:
+    label: 📄 完整Prompt
+    description: 请在此处粘贴完整的prompt文本
+    placeholder: |
+      cyberpunk portrait of a beautiful woman, neon lights, futuristic city background, high detail, 8k, professional photography, cinematic lighting, vibrant colors, tech wear, cybernetic enhancements, blade runner style
+    render: shell
+  validations:
+    required: true
+
+- type: input
+  id: model_name
+  attributes:
+    label: 🤖 模型名称
+    description: 使用的AI模型名称
+    placeholder: 例如：gemini-3.0-pro-preview
+  validations:
+    required: true
+
+- type: textarea
+  id: other_parameters
+  attributes:
+    label: ⚙️ 其他参数 (可选)
+    description: 其他重要的生成参数，如采样方法、步数、CFG Scale、温度等
+    placeholder: |
+      采样方法: DPM++ 2M Karras
+      步数: 30
+      CFG Scale: 7.5
+      分辨率: 1024x1024
+  validations:
+    required: false
+
+- type: input
+  id: image_url
+  attributes:
+    label: 🖼️ 效果图URL
+    description: 生成的图片链接或上传图片
+    placeholder: 例如：https://example.com/image.jpg
+  validations:
+    required: true
+
+- type: input
+  id: tags
+  attributes:
+    label: 🏷️ 标签
+    description: 用逗号分隔的标签，如：赛博朋克,人物,科幻,高质量
+    placeholder: 例如：赛博朋克,人物,科幻,高质量
+  validations:
+    required: true
+
+- type: checkboxes
+  id: nsfw_content
+  attributes:
+    label: 🔞 NSFW内容
+    description: 标记内容的安全性级别
+    options:
+      - label: 安全内容 (SFW)
+        required: false
+      - label: 成人内容 (NSFW)
+        required: false
+
+- type: markdown
+  attributes:
+    value: |
+      ## 📋 提取检查清单
+      提交前请确认：
+      - [ ] Prompt文本完整且格式正确
+      - [ ] 模型信息准确无误
+      - [ ] 效果图清晰可见
+      - [ ] 标签分类合理
+      - [ ] NSFW内容标记正确
+      - [ ] 参数设置完整
+
+      感谢你的贡献！🎉
