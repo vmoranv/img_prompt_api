@@ -41,7 +41,7 @@ jobs:
                  creator: (.body | match("### 👤 作者\r?\n.*?\r?\n([^\r\n]+)"; "g").captures[0].string // ""),
                  prompt_content: (
                    # 提取完整的prompt内容，包括多行
-                   (.body | match("### 📄 完整Prompt\r?\n.*?\r?\n((?:.|\r?\n)*?)(?=### |\r?\n\r?\n### |\r?\n$|$)"; "g").captures[0].string // "") |
+                   (.body | match("### 📄 完整Prompt\r?\n.*?\r?\n((?:.|\r?\n)*?)\r?\n###"; "g").captures[0].string // "") |
                    # 清理多余的换行和空格
                    gsub("[\r\n]+"; " ") |
                    gsub(" +"; " ") |
@@ -52,7 +52,7 @@ jobs:
                  other_parameters: (.body | match("### ⚙️ 其他参数 \\(可选\\)\r?\n.*?\r?\n([^\r\n]+)"; "g").captures[0].string // ""),
                  image_url: (
                    # 提取图片URL，包括GitHub上传的图片和textarea中的多行内容
-                   (.body | match("### 🖼️ 效果图URL或上传图片\r?\n.*?\r?\n((?:.|\r?\n)*?)(?=### |\r?\n\r?\n### |\r?\n$|$)"; "g").captures[0].string // "") |
+                   (.body | match("### 🖼️ 效果图URL或上传图片\r?\n.*?\r?\n((?:.|\r?\n)*?)\r?\n###"; "g").captures[0].string // "") |
                    # 提取GitHub图片链接
                    capture("https?://[^\\s\\)]+") |
                    .string // ""
