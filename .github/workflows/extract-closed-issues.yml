@@ -46,18 +46,17 @@ jobs:
                        creator: (.body | match("### 👤 作者\r?\n.*?\r?\n([^\r\n]+)"; "g").captures[0].string // ""),
                        prompt_content: (.body | match("### 📄 完整Prompt\r?\n.*?\r?\n([^\r\n]+)"; "g").captures[0].string // ""),
                        model_name: (.body | match("### 🤖 模型名称\r?\n.*?\r?\n([^\r\n]+)"; "g").captures[0].string // ""),
-                       other_parameters: (.body | match("### ⚙️ 其他参数 \(可选\)\r?\n.*?\r?\n([^\r\n]+)"; "g").captures[0].string // ""),
+                       other_parameters: (.body | match("### ⚙️ 其他参数 \\(可选\\)\r?\n.*?\r?\n([^\r\n]+)"; "g").captures[0].string // ""),
                        image_url: (
-                         # 提取图片URL，包括GitHub上传的图片
-                         (.body | match("### 🖼️ 效果图URL\r?\n.*?\r?\n([^\r\n]+)"; "g").captures[0].string // "") |
+                         # 提取图片URL，包括GitHub上传的图片和textarea中的多行内容
+                         (.body | match("### 🖼️ 效果图URL或上传图片\r?\n.*?\r?\n([^\r\n]+(?:\r?\n[^\r\n]+)*)"; "g").captures[0].string // "") |
                          capture("https?://[^\\s\\)]+") |
                          .string // ""
                        ),
                        tags: (.body | match("### 🏷️ 标签\r?\n.*?\r?\n([^\r\n]+)"; "g").captures[0].string // ""),
                        nsfw_content: (
-                         # 提取NSFW复选框状态
-                         if (.body | test("安全内容 \\(SFW\\)")) then ["安全内容 (SFW)"] else [] end +
-                         if (.body | test("成人内容 \\(NSFW\\)")) then ["成人内容 (NSFW)"] else [] end
+                         # 提取NSFW复选框状态，现在只有一个选项，默认为SFW
+                         if (.body | test("\\[x\\].*成人内容 \\(NSFW\\)")) then "NSFW" else "SFW" end
                        )
                      }
                    ) catch null

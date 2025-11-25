@@ -79,11 +79,9 @@ body:
 - type: checkboxes
   id: nsfw_content
   attributes:
-    label: 🔞 NSFW内容
-    description: 标记内容的安全性级别
+    label: 🔞 内容安全级别
+    description: 默认为安全内容(SFW)，如包含成人内容请勾选此项
     options:
-      - label: 安全内容 (SFW)
-        required: false
       - label: 成人内容 (NSFW)
         required: false
 
