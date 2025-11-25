@@ -19,11 +19,19 @@ jobs:
       - name: Install GitHub CLI
         run: sudo apt update && sudo apt install -y gh
 
-      - name: Fetch and parse closed issues
+      - name: Fetch and parse all issues
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # 获取所有存在的prompt-extraction issues（包括开放和关闭的）
+          echo "获取所有存在的prompt-extraction issues..."
+          gh api repos/${{ github.repository }}/issues \
+             -X GET -f labels=prompt-extraction -f per_page=100 --paginate \
+             --jq '[ .[] | .number ]' \
+             > existing_issues.json
+          
           # 获取已关闭的prompt-extraction issues并解析结构化数据
+          echo "获取已关闭的prompt-extraction issues..."
           gh api repos/${{ github.repository }}/issues \
              -X GET -f state=closed -f labels=prompt-extraction -f per_page=100 --paginate \
              --jq '[ .[] |
@@ -64,7 +72,25 @@ jobs:
                }
              ]' \
              | jq '.' \
-             > prompts.json
+             > closed_issues.json
+
+          # 如果存在现有的prompts.json，过滤掉已删除的issues
+          if [ -f prompts.json ]; then
+            echo "过滤已删除的issues..."
+            jq --slurpfile existing existing_issues.json '
+              map(
+                select(.number as $issue_num |
+                  $existing[0] | index($issue_num) >= 0
+                )
+              )
+            ' prompts.json > filtered_prompts.json
+            
+            # 合并新的关闭issues和过滤后的现有数据
+            jq -s '.[0] + .[1] | unique_by(.number)' filtered_prompts.json closed_issues.json > prompts.json
+          else
+            echo "首次创建prompts.json..."
+            cp closed_issues.json prompts.json
+          fi
 
           echo "提取完成，prompts.json已保存到根目录"
           ls -la prompts.json
