@@ -26,7 +26,7 @@ jobs:
           # 获取已关闭的prompt-extraction issues并解析结构化数据
           gh api repos/${{ github.repository }}/issues \
              -X GET -f state=closed -f labels=prompt-extraction -f per_page=100 --paginate \
-             --jq '[ .[] | 
+             --jq '[ .[] |
                {
                  number,
                  title,
@@ -36,7 +36,6 @@ jobs:
                  updated_at,
                  user: {login: .user.login, id: .user.id},
                  labels: [.labels[] | .name],
-                 assignees: [.assignees[] | .login],
                  parsed_data: (
                    # 解析YAML格式的issue body
                    try (
@@ -64,6 +63,7 @@ jobs:
                  raw_body: .body
                }
              ]' \
+             | jq '.' \
              > prompts.json
 
           echo "提取完成，prompts.json已保存到根目录"
