@@ -53,9 +53,12 @@ jobs:
                  image_url: (
                    # 提取图片URL，包括GitHub上传的图片和textarea中的多行内容
                    (.body | match("### 🖼️ 效果图URL或上传图片\r?\n.*?\r?\n((?:.|\r?\n)*?)\r?\n###"; "g").captures[0].string // "") |
-                   # 提取GitHub图片链接
-                   capture("https?://[^\\s\\)]+") |
-                   .string // ""
+                   # 提取GitHub图片链接，支持markdown格式 ![Image](url) 和直接URL
+                   (if test("!\[.*?\]\(https?://") then
+                     match("!\[.*?\]\((https?://[^\\)]+)\)"; "g").captures[0].string // ""
+                   else
+                     capture("https?://[^\\s\\)]+") | .string // ""
+                   end)
                  ),
                  tags: (.body | match("### 🏷️ 标签\r?\n.*?\r?\n([^\r\n]+)"; "g").captures[0].string // ""),
                  nsfw_content: (
