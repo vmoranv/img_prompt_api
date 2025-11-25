@@ -2,7 +2,6 @@ name: 生图Prompt提取
 description: 从issue中提取生图prompt、模型和效果图信息
 title: '[PROMPT] '
 labels: ['prompt-extraction']
-assignees: ''
 body:
 - type: markdown
   attributes:
