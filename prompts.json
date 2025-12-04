@@ -5,9 +5,9 @@
     "model_name": "nano banana pro",
     "nsfw_content": "NSFW",
     "other_parameters": "_No response_",
-    "prompt_content": "根据给出图片中的人物，生成一张场景细节丰富画风精美的二次元图片。 前景与主体（床铺）： 画面下方和中心是一张铺着粉红色床单的大床。床单看起来非常凌乱，布满褶皱，并且布满湿痕和黏液。 床上分布散落着图中人物的各种衣服和饰品（上衣，下衣，内衣，袜子/裤袜，腿环，choker，手套等全身衣着），需要分开零散放置，衣服也潮湿且褶皱。 床上还放置了撕开的避孕套袋子，装满的避孕套 后景（磨砂玻璃）： 画面的上方是一面巨大的半透明磨砂玻璃 透过磨砂玻璃可以极端模糊看到图中人物无衣物无身体细节的外轮廓的面向镜头，趴在玻璃上，背后有一个身材健硕的男人，站在角色正后方，双手扶着角色的腰部，角色完全放弃身体重心的维持，由男人手握住腰部托举",
-    "prompt_title": "磨砂浴室",
-    "tags": "磨砂玻璃,避孕套,潮水",
-    "updated_at": "2025-12-04T14:17:29Z"
+    "prompt_content": "best quality, masterpiece, 8k, photorealistic, raw photo, realistic, (dvd cover:1.2), magazine cover, collage, advertising,dense japanese text overlay 1girl, solo, cosplay, japanese light blue fluffy hoodie, short skirt, double peace sign, hands near face, cute face, smiling, inset images, multiple views, vertical japanese text, typography, (insets: nurse uniform, gym clothes, bloomers), background: indoor, bedroom,collage of 6+ small scene shots",
+    "prompt_title": "日本DVD动作片",
+    "tags": "DVD动作片,清纯,出道",
+    "updated_at": "2025-12-04T14:21:15Z"
   }
 ]
