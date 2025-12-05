@@ -72,19 +72,28 @@ jobs:
              | jq '.' \
              > closed_issues.json
 
-          # 如果存在现有的prompts.json，过滤掉已删除的issues
+          # 如果存在现有的prompts.json，追加新的关闭issues
           if [ -f prompts.json ]; then
-            echo "过滤已删除的issues..."
-            jq --slurpfile existing existing_issues.json '
+            echo "追加新的关闭issues到现有prompts.json..."
+            
+            # 获取现有prompts.json中的issue编号列表
+            jq '[.[] | .number]' prompts.json > existing_prompt_numbers.json
+            
+            # 过滤出不在现有prompts中的新关闭issues
+            jq --slurpfile existing_numbers existing_prompt_numbers.json '
               map(
                 select(.number as $issue_num |
-                  $existing[0] | index($issue_num) >= 0
+                  ($existing_numbers[0] | index($issue_num)) == null
                 )
               )
-            ' prompts.json > filtered_prompts.json
+            ' closed_issues.json > new_closed_issues.json
             
-            # 合并新的关闭issues和过滤后的现有数据
-            jq -s '.[0] + .[1] | unique_by(.number)' filtered_prompts.json closed_issues.json > prompts.json
+            # 将新的issues追加到现有prompts.json中
+            jq -s '.[0] + .[1]' prompts.json new_closed_issues.json > prompts_updated.json
+            mv prompts_updated.json prompts.json
+            
+            # 清理临时文件
+            rm -f existing_prompt_numbers.json new_closed_issues.json filtered_prompts.json
           else
             echo "首次创建prompts.json..."
             cp closed_issues.json prompts.json
