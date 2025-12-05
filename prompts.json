@@ -1,13 +1,13 @@
 [
   {
     "creator": "vmoranv",
-    "image_url": "https://github.com/user-attachments/assets/63de23c6-dddb-4678-a389-d3e1de28d16b",
+    "image_url": "https://github.com/user-attachments/assets/49c1b520-4f25-465a-994e-fdad20f92875",
     "model_name": "nano banana pro",
-    "nsfw_content": "SFW",
+    "nsfw_content": "NSFW",
     "other_parameters": "_No response_",
-    "prompt_content": "参考给出的图片修改:这是一张日系黑白漫画风格的手绘插画，采用了局部上色的手法，画面主体是黑白线稿，仅在人物脸部保留了明显的粉红色红晕。视角为近距离俯视，一位身穿水手服校服的短发少女仰面躺在床上，头发凌乱地散开。她的表情非常羞涩、动情且慌乱，眼神迷离湿润，脸颊通红，脸上和脖子上挂着明显的汗珠，呼吸似乎很急促。画面右侧有一个对话气泡，里面包含一颗粉红色的爱心。可以看到光滑的右腿抬起",
-    "prompt_title": "漫画做艾图",
-    "tags": "爱心,汗水",
-    "updated_at": "2025-12-05T04:58:01Z"
+    "prompt_content": "一张专业的、电影般的照片（不是数字艺术或绘画），捕捉到一位现实派人体艺术家，她具有与上传的参考照片相同的面部特征，这位艺术家正在画架上画她逼真的自画像。她手持一支精细的画笔靠近脸颊，站在画架前。从原始图像提取线稿同时去掉多余的衣服作为人体模型摆好姿势。线稿部分已用与原始图像相同的着色着色。未完成着色。不得为单色。着色完成约70%。如果图像为二次元则以二次元风格调整",
+    "prompt_title": "裸体自画像",
+    "tags": "裸体,自画像,真人艺术家",
+    "updated_at": "2025-12-05T05:25:43Z"
   }
 ]
