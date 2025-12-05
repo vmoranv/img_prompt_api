@@ -36,6 +36,7 @@ jobs:
              -X GET -f state=closed -f labels=prompt-extraction -f per_page=100 --paginate \
              --jq '[ .[] |
                {
+                 number: .number,
                  updated_at: .updated_at,
                  prompt_title: (.body | match("### 🎯 Prompt标题\r?\n.*?\r?\n([^\r\n]+)"; "g").captures[0].string // ""),
                  creator: (.body | match("### 👤 作者\r?\n.*?\r?\n([^\r\n]+)"; "g").captures[0].string // ""),
@@ -72,24 +73,12 @@ jobs:
              | jq '.' \
              > closed_issues.json
 
-          # 如果存在现有的prompts.json，追加新的关闭issues
+          # 如果存在现有的prompts.json，合并所有关闭的issues
           if [ -f prompts.json ]; then
-            echo "追加新的关闭issues到现有prompts.json..."
+            echo "合并所有关闭的issues到现有prompts.json..."
             
-            # 获取现有prompts.json中的issue编号列表
-            jq '[.[] | .number]' prompts.json > existing_prompt_numbers.json
-            
-            # 过滤出不在现有prompts中的新关闭issues
-            jq --slurpfile existing_numbers existing_prompt_numbers.json '
-              map(
-                select(.number as $issue_num |
-                  ($existing_numbers[0] | index($issue_num)) == null
-                )
-              )
-            ' closed_issues.json > new_closed_issues.json
-            
-            # 将新的issues追加到现有prompts.json中
-            jq -s '.[0] + .[1]' prompts.json new_closed_issues.json > prompts_updated.json
+            # 合并现有的prompts和所有关闭的issues，按number去重
+            jq -s '.[0] + .[1] | unique_by(.number)' prompts.json closed_issues.json > prompts_updated.json
             mv prompts_updated.json prompts.json
             
             # 清理临时文件
