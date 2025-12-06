@@ -357,5 +357,17 @@
     "prompt_title": "公园心形框合影",
     "tags": "合影,小公园",
     "updated_at": "2025-12-06T10:16:00Z"
+  },
+  {
+    "creator": "vmoranv",
+    "image_url": "",
+    "model_name": "nano banana pro",
+    "nsfw_content": "NSFW",
+    "number": 30,
+    "other_parameters": "_No response_",
+    "prompt_content": "高质量动漫插画，特写镜头。参考图中的女性角色正用羞涩的表情直视着观者。她双手举着一条符合角色整体颜色的蕾丝内裤在胸前，仿佛在展示或脱下它。她只露出光洁的肩膀。她的肌肤上布满了汗珠，身上还冒着缕缕蒸汽，营造出一种闷热潮湿的氛围。背景是一扇模糊的明亮窗户。",
+    "prompt_title": "蕾丝内裤展示",
+    "tags": "内裤展示,全裸",
+    "updated_at": "2025-12-06T10:17:08Z"
   }
 ]
