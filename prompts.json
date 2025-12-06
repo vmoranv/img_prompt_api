@@ -345,5 +345,17 @@
     "prompt_title": "X知识与战斗力",
     "tags": "X知识与战斗力对比",
     "updated_at": "2025-12-06T03:13:42Z"
+  },
+  {
+    "creator": "vmoranv",
+    "image_url": "https://github.com/user-attachments/assets/c77a1f9f-8508-40f2-a6a6-c86cf1cd05ba",
+    "model_name": "nano banana pro",
+    "nsfw_content": "SFW",
+    "number": 29,
+    "other_parameters": "_No response_",
+    "prompt_content": "高质量的动漫插画与写实背景相结合。第一人称视角。前景中参考图中的女孩伸出左手构成心的右半边另一只手构成另外左半边，构成一个框。在这个两个人的手构成的心形框内。她面带微笑，脸颊泛红，对着观众露出幸福的笑容。背景是写实的户外场景，一条铺着石板的公园小径，绿树环绕，蓝天白云，略微虚化以突出动漫人物。",
+    "prompt_title": "公园心形框合影",
+    "tags": "合影,小公园",
+    "updated_at": "2025-12-06T10:16:00Z"
   }
 ]
